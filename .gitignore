@@ -1,4 +1,9 @@
+
+# Private environment variables
 .env
+.env.*
+!.env.example
+
+# Dependencies
 node_modules/
-data/*.ndjson
-.DS_Store
+client/node_modules/

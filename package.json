@@ -1,13 +1,18 @@
 {
   "name": "piggy-forecast",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "Iowa livestock-odor risk dashboard using OpenWeather, Google Maps, Iowa DNR and USDA NASS",
-  "engines": {"node": ">=20.6"},
+  "description": "Iowa livestock odor risk dashboard; Node API + React/Vite pink frontend",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",
-    "dev": "node --env-file-if-exists=.env --watch server/index.js",
+    "dev:server": "node --env-file-if-exists=.env --watch server/index.js",
+    "dev:client": "npm --prefix client run dev",
+    "install:client": "npm --prefix client install",
+    "build": "npm --prefix client run build",
     "test": "node --test tests/*.test.js"
   },
   "license": "MIT"
