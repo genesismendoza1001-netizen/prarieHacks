@@ -1,5 +1,6 @@
 import { createServer as httpCreateServer } from 'node:http';
 import { readFile, appendFile, mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { CONFIG } from './config.js';
@@ -9,7 +10,9 @@ import { getOdorDashboard, getPigCounter } from './appService.js';
 import { validIowaCoordinate } from './geo.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const PUBLIC = join(ROOT, 'public');
+// Serve the built React app when available; otherwise serve the original static UI.
+const BUILD_DIR = join(ROOT, 'client', 'dist');
+const PUBLIC = existsSync(join(BUILD_DIR, 'index.html')) ? BUILD_DIR : join(ROOT, 'app');
 const REPORTS = join(ROOT, 'data', 'odor-reports.ndjson');
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8' };
