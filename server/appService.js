@@ -1,6 +1,6 @@
 import { CONFIG } from './config.js';
 import { geocodeTown, weatherFor, facilitiesNear, pigInventory, harvestProgress } from './providers.js';
-import { validIowaCoordinate } from './geo.js';
+import { validIowaCoordinate, haversineKm } from './geo.js';
 import { buildTodayForecast } from './model.js';
 import { seasonForDate } from './season.js';
 
@@ -47,7 +47,11 @@ export async function getOdorDashboard(input, deps = {}) {
     model: { name: 'Iowa odor exposure index', calibrated: false, type: 'heuristic', version: '1.0.0' },
     conditions: { ...weather.current, manureStatus, season: seasonForDate(now), cropProgress },
     prediction: { ...prediction, current: { ...prediction.current, topSources: prediction.current.topSources.slice(0, 8) } },
-    facilities: { totalNearby: dnr.facilities.length,
+    facilities: { nearby: dnr.facilities.map(f => ({
+      id: f.id, name: f.name, type: f.type, lat: f.lat, lon: f.lon,
+      totalAnimalUnits: f.totalAnimalUnits, swineAnimalUnits: f.swineAnimalUnits,
+      distanceKm: +haversineKm(receptor, f).toFixed(1)
+    })).sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 100), totalNearby: dnr.facilities.length,
       pigFacilities: dnr.facilities.filter(f => f.swineAnimalUnits > 0).length,
       searchRadiusKm: dnr.radiusKm, complete: dnr.complete, source: dnr.sourceUrl },
     sources: {

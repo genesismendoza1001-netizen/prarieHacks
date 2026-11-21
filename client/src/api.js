@@ -19,6 +19,7 @@ export const api = {
     else { params.set('lat', String(lat)); params.set('lon', String(lon)); }
     return request(`/api/predict?${params.toString()}`);
   },
+  environment: ({ lat, lon }) => request(`/api/environment?${new URLSearchParams({ lat: String(lat), lon: String(lon) })}`),
   report: ({ lat, lon, level, consent }) => request('/api/observations', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

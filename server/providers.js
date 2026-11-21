@@ -38,6 +38,8 @@ export function normalizeWeather(point, { current = false } = {}) {
     windFromDeg: windRaw === undefined || windRaw === null ? null : Number(windRaw),
     description: point.weather?.[0]?.description || '',
     timestampMs: Number(point.dt) * 1000,
+    rain1hMm: Number(point.rain?.['1h']) || 0,
+    rain3hMm: Number(point.rain?.['3h']) || 0,
     isCurrent: current
   };
 }

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from './api.js';
 import MapPanel from './components/MapPanel.jsx';
+import EnvironmentPanel from './components/EnvironmentPanel.jsx';
+import FarmingSimulator from './components/FarmingSimulator.jsx';
 
 const IOWA_TIME = 'America/Chicago';
 const DNR_URL = 'https://services3.arcgis.com/kfmqp6kwSeDnDKNY/ArcGIS/rest/services/animal_feeding_operations/FeatureServer/0';
@@ -81,15 +83,15 @@ function SeasonCard({ data, manureStatus, onChange }) {
   </article>;
 }
 function FacilityCard({ data, mapKey }) {
-  const sources = data?.prediction.current.topSources || [];
+  const sources = data?.facilities?.nearby || [];
   return <article className="card map-card">
     <div className="card-top"><span className="section-kicker">NEIGHBORHOOD NOSE CHECK</span><span className="emoji-small">📍</span></div>
-    <h2>Livestock facilities near you</h2>
-    <MapPanel apiKey={mapKey} location={data?.location} sources={sources}/>
+    <h2>Live stink map &amp; wind</h2>
+    <MapPanel apiKey={mapKey} location={data?.location} sources={sources} windFromDeg={data?.conditions?.windFromDeg} windMph={data?.conditions?.windMph}/>
     <div className="source-list">{sources.length ? sources.slice(0, 4).map((s, i) => <div className="source-row" key={`${s.id}-${i}`}>
       <div><div className="source-name">{s.name}</div><div className="source-note">{s.swineAnimalUnits > 0 ? 'Swine-containing operation' : 'Other livestock operation'} · {Math.round(s.totalAnimalUnits || 0).toLocaleString()} animal units</div></div>
       <span className="source-distance">{fixed(s.distanceKm)} km</span>
-    </div>) : <p className="muted">{data ? 'No contributing mapped facilities found nearby. Other odor sources may still exist.' : 'Facility contributions appear here after a forecast.'}</p>}</div>
+    </div>) : <p className="muted">{data ? 'No regulated facilities returned nearby. Other odor sources may still exist.' : 'Facility contributions appear here after a forecast.'}</p>}</div>
     <a href={DNR_URL} target="_blank" rel="noreferrer" className="fact-link">Browse the full DNR dataset ↗</a>
     <p className="fineprint">Distances are geographic estimates. Animal units are not pig head counts. Smaller operations may be absent.</p>
   </article>;
@@ -221,6 +223,8 @@ export default function App() {
         <section className="summary-grid" aria-label="Odor forecast summary"><RiskCard data={dashboard} loading={loading}/><WeatherCard data={dashboard}/></section>
         <section className="details-grid"><PeakCard data={dashboard}/><SeasonCard data={dashboard} manureStatus={manureStatus} onChange={changeManure}/></section>
         <section className="details-grid bottom-grid"><FacilityCard data={dashboard} mapKey={config?.googleMapsBrowserKey}/><FactsCard pig={pig} facts={facts}/></section>
+        <EnvironmentPanel location={dashboard?.location} odor={dashboard?.prediction?.current}/>
+        <FarmingSimulator/>
         <ReportCard location={dashboard?.location}/>
       </main>
       <footer><span>🐽 Piggy Forecast · Made for curious Iowans</span><span>Informational only · Not an odor exposure or health warning service · <a href="https://www.iowadnr.gov/environmental-protection/animal-feeding-operations/afo-online-services" target="_blank" rel="noreferrer">DNR data details ↗</a></span></footer>

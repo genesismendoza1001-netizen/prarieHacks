@@ -8,6 +8,7 @@ import { ProviderError } from './net.js';
 import { FACTS } from './facts.js';
 import { getOdorDashboard, getPigCounter } from './appService.js';
 import { validIowaCoordinate } from './geo.js';
+import { getEnvironmentDashboard } from './environment.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // Serve the built React app when available; otherwise serve the original static UI.
@@ -69,7 +70,7 @@ export function createAppServer(deps = {}) {
       if (req.method === 'GET' && url.pathname === '/api/health') return json(res, 200, {
         status: 'ok', services: { openWeatherConfigured: !!CONFIG.openWeatherKey,
           googleGeocodingConfigured: !!CONFIG.googleServerKey, googleMapConfigured: !!CONFIG.googleBrowserKey,
-          nassConfigured: !!CONFIG.nassKey, iowaDnr: 'public GIS service' }
+          nassConfigured: !!CONFIG.nassKey, airNowConfigured: !!CONFIG.airNowKey, iowaDnr: 'public GIS service' }
       });
       if (req.method === 'GET' && url.pathname === '/api/config') return json(res, 200, {
         googleMapsBrowserKey: CONFIG.googleBrowserKey,
@@ -78,6 +79,10 @@ export function createAppServer(deps = {}) {
       });
       if (req.method === 'GET' && url.pathname === '/api/facts') return json(res, 200, { facts: FACTS });
       if (req.method === 'GET' && url.pathname === '/api/pigs') return json(res, 200, await (deps.getPigCounter || getPigCounter)());
+      if (req.method === 'GET' && url.pathname === '/api/environment') {
+        const input = { lat: url.searchParams.get('lat'), lon: url.searchParams.get('lon') };
+        return json(res, 200, await (deps.getEnvironmentDashboard || getEnvironmentDashboard)(input));
+      }
       if (req.method === 'GET' && url.pathname === '/api/predict') {
         const town = url.searchParams.get('town');
         const manureStatus = url.searchParams.get('manureStatus') || 'unknown';
@@ -116,6 +121,6 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
   createAppServer().listen(CONFIG.port, () => {
     console.log(`Piggy Forecast available at http://localhost:${CONFIG.port}`);
     console.log('API keys loaded:', { openWeather: !!CONFIG.openWeatherKey, googleGeocoding: !!CONFIG.googleServerKey,
-      googleBrowserMap: !!CONFIG.googleBrowserKey, nass: !!CONFIG.nassKey });
+      googleBrowserMap: !!CONFIG.googleBrowserKey, nass: !!CONFIG.nassKey, airNow: !!CONFIG.airNowKey });
   });
 }
