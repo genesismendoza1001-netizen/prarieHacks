@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fae2ed" />
+  <meta name="description" content="Piggy Forecast — a playful Iowa livestock-odor risk dashboard powered by weather and livestock GIS data." />
+  <title>Piggy Forecast · Iowa smell outlook</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="backdrop-bloom bloom-one" aria-hidden="true"></div>
+  <div class="backdrop-bloom bloom-two" aria-hidden="true"></div>
+  <div class="shell">
+    <header class="topbar">
+      <a href="/" class="brand" aria-label="Piggy Forecast home">
+        <span class="logo" aria-hidden="true">🐽</span>
+        <span><strong>Piggy Forecast</strong><small>THE IOWA SNIFF REPORT</small></span>
+      </a>
+      <div class="header-end">
+        <span class="live-chip"><i></i> DATA-POWERED</span>
+        <span id="clock" class="today-text">Iowa, USA</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-dot">✦</span> CORN COUNTRY WEATHER, WITH A TWIST</div>
+          <h1>How <em>oinky</em> is it outside?</h1>
+          <p>Check the day's potential manure odor with real weather, wind direction, and nearby Iowa livestock facilities.</p>
+          <form id="searchForm" class="search-card">
+            <label for="townInput">FIND YOUR IOWA FORECAST</label>
+            <div class="search-row">
+              <div class="input-wrap"><span aria-hidden="true">⌕</span><input id="townInput" name="town" value="Des Moines" maxlength="100" autocomplete="address-level2" placeholder="Enter a city or town" required /></div>
+              <button class="primary-btn" id="searchBtn" type="submit">Sniff it <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="geo-row">
+              <button type="button" id="geolocateBtn" class="text-btn">◎ Use my current location</button>
+              <span class="tiny-separator">·</span><span>Location is only sent to weather & facility services for this request.</span>
+            </div>
+          </form>
+        </div>
+        <div class="mascot" aria-hidden="true"><div class="mascot-sun">☀</div><div class="mascot-pig">🐷</div><div class="mascot-wind w1">〰</div><div class="mascot-wind w2">〰</div><span class="mascot-caption">SNIFF SNIFF...</span></div>
+      </section>
+
+      <div id="appAlert" role="status" aria-live="polite" class="alert hidden"></div>
+
+      <section class="summary-grid" aria-label="Odor forecast summary">
+        <article class="card risk-card">
+          <div class="card-top"><span class="section-kicker">YOUR LOCAL FORECAST</span><span id="updateBadge" class="small-badge">WAITING FOR LIVE DATA</span></div>
+          <h2 id="locationHeading">Ready to sniff around?</h2>
+          <p class="muted" id="currentSubheading">Search for an Iowa town or choose your location.</p>
+          <div class="risk-body">
+            <div class="meter" id="riskMeter" style="--score: 0" role="img" aria-label="Odor risk not yet available">
+              <div class="meter-inside"><span class="meter-number" id="riskNumber">—</span><span class="meter-unit">/100</span></div>
+            </div>
+            <div class="risk-details"><div class="risk-eyebrow">ODOR RISK INDEX</div><div class="risk-label" id="riskLabel">No estimate yet</div><p id="riskDescription">Live data is needed to calculate an index.</p><span class="index-hint">Not a percent chance · Uncalibrated model</span></div>
+          </div>
+          <div class="note-bar"><span aria-hidden="true">ⓘ</span><span id="modelNote">We do not have historical smell reports to calibrate these scores as probabilities.</span></div>
+        </article>
+
+        <article class="card today-card">
+          <div class="card-top"><span class="section-kicker">TODAY'S CONDITIONS</span><span class="emoji-small">🌤️</span></div>
+          <h2 id="weatherTitle">Weather snapshot</h2>
+          <div class="weather-current"><span class="weather-temp" id="tempValue">—°</span><span class="weather-description" id="weatherDesc">Live weather will appear here.</span></div>
+          <div class="mini-metrics">
+            <div class="mini-metric"><span class="metric-symbol">↝</span><span><small>WIND</small><strong id="windValue">—</strong></span></div>
+            <div class="mini-metric"><span class="metric-symbol">◌</span><span><small>HUMIDITY</small><strong id="humidityValue">—</strong></span></div>
+            <div class="mini-metric"><span class="metric-symbol">🌾</span><span><small>NEARBY FACILITIES</small><strong id="farmValue">—</strong></span></div>
+            <div class="mini-metric"><span class="metric-symbol">🐖</span><span><small>WITH SWINE</small><strong id="swineValue">—</strong></span></div>
+          </div>
+          <p class="source-line">Weather: <a href="https://openweathermap.org/api/forecast5" target="_blank" rel="noreferrer">OpenWeather</a> · Facilities: <a href="https://services3.arcgis.com/kfmqp6kwSeDnDKNY/ArcGIS/rest/services/animal_feeding_operations/FeatureServer/0" target="_blank" rel="noreferrer">Iowa DNR GIS</a></p>
+        </article>
+      </section>
+
+      <section class="details-grid">
+        <article class="card peak-card">
+          <div class="card-top"><span class="section-kicker">THE NEXT FEW HOURS</span><span class="icon-decor">✶</span></div>
+          <div class="peak-header"><div><h2>When might it smell the most?</h2><p id="peakCopy" class="muted">OpenWeather's 3-hour forecasts will power this outlook.</p></div><div class="peak-time"><small>FORECAST PEAK</small><strong id="peakTime">—</strong></div></div>
+          <div id="timeline" class="timeline" aria-label="Today odor risk forecast"><div class="timeline-empty">Your hourly outlook will appear after your first forecast.</div></div>
+          <p class="fineprint">Peak timing is the highest modeled 3-hour forecast point remaining today, not an exact odor event prediction.</p>
+        </article>
+        <article class="card season-card">
+          <div class="card-top"><span class="section-kicker">FROM FARM TO FIELD</span><span class="emoji-small">🌽</span></div>
+          <h2>What's happening on the fields?</h2>
+          <div class="season-panel"><span class="season-icon">🚜</span><div><strong id="seasonTitle">Seasonal context loading</strong><p id="seasonDescription" class="muted">Spring and fall fieldwork can affect manure application.</p></div></div>
+          <label class="select-label" for="manureSelect">DO YOU KNOW OF MANURE SPREADING NEARBY?</label>
+          <select id="manureSelect"><option value="unknown">Not sure (use seasonal estimate)</option><option value="yes">Yes, spreading is happening</option><option value="no">No known spreading</option></select>
+          <p id="harvestData" class="fineprint">Actual local manure application events are not available from the DNR feed.</p>
+        </article>
+      </section>
+
+      <section class="details-grid bottom-grid">
+        <article class="card map-card">
+          <div class="card-top"><span class="section-kicker">NEIGHBORHOOD NOSE CHECK</span><span class="emoji-small">📍</span></div>
+          <h2>Livestock facilities near you</h2>
+          <div id="map" class="map-stage"><div class="map-placeholder"><div class="radar r1"></div><div class="radar r2"></div><div class="radar r3"></div><span>🐽</span><small>Map preview available with a Google Maps browser key.</small></div></div>
+          <div id="sourceList" class="source-list"><p class="muted">Facility contributions appear here after a forecast.</p></div>
+          <p class="fineprint">Distance is estimated from facility coordinates. Animal units do not equal pig head counts. Smaller facilities may be absent.</p>
+        </article>
+        <article class="card facts-card">
+          <div class="card-top"><span class="section-kicker">HOG WILD NUMBERS</span><span class="emoji-small">🐖</span></div>
+          <h2>We're serious about pigs.</h2>
+          <div class="pig-stat"><div><div class="pig-number" id="pigNumber">24.7M</div><div class="pig-caption">hogs & pigs in Iowa <span id="pigDate">(Sep 2026)</span></div></div><span class="big-pig" aria-hidden="true">🐷</span></div>
+          <p class="pig-source"><span id="pigAttribution">USDA NASS inventory, dated snapshot</span> · <a id="pigSourceLink" href="https://data.nass.usda.gov/Newsroom/2026/09-24-2026.php" target="_blank" rel="noreferrer">Source ↗</a></p>
+          <div class="fact-divider"></div>
+          <div class="fact-top"><strong>Did you know?</strong><button type="button" id="nextFactBtn" class="text-btn">Another fun fact ↻</button></div>
+          <div class="fact-contents"><span id="factEmoji">🌽</span><p id="factText">Iowa's agriculture and manufacturing have some fascinating stories.</p></div>
+          <a id="factSource" href="https://www.nass.usda.gov/" target="_blank" rel="noreferrer" class="fact-link">View the source ↗</a>
+        </article>
+      </section>
+
+      <section class="community card">
+        <div><span class="section-kicker">HELP IMPROVE THE FORECAST</span><h2>How does it actually smell outside?</h2><p class="muted">Send an optional 0–4 smell report. This stays on your server and is <strong>not</strong> used to retrain forecasts automatically.</p></div>
+        <form id="observationForm" class="observation-form">
+          <label for="smellSelect">YOUR SMELL RATING</label>
+          <select id="smellSelect"><option value="0">0 — No smell</option><option value="1">1 — Slight</option><option value="2">2 — Moderate</option><option value="3">3 — Strong</option><option value="4">4 — Very strong</option></select>
+          <label class="consent-check"><input type="checkbox" id="consentCheck" /> I agree to store my approximate location (~1 km) and odor rating on this server.</label>
+          <button type="submit" class="secondary-btn">Submit smell report</button>
+          <span id="observationMessage" class="observation-msg" role="status"></span>
+        </form>
+      </section>
+    </main>
+    <footer><span>🐽 Piggy Forecast · Made for curious Iowans</span><span>Informational only · Not an odor exposure or health warning service · <a href="https://www.iowadnr.gov/environmental-protection/animal-feeding-operations/afo-online-services" target="_blank" rel="noreferrer">DNR data details ↗</a></span></footer>
+  </div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
