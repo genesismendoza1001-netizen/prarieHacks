@@ -119,7 +119,7 @@ export function createAppServer(deps = {}) {
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   createAppServer().listen(CONFIG.port, () => {
-    console.log(`Piggy Forecast available at http://localhost:${CONFIG.port}`);
+    console.log(`GrinnSmell available at http://localhost:${CONFIG.port}`);
     console.log('API keys loaded:', { openWeather: !!CONFIG.openWeatherKey, googleGeocoding: !!CONFIG.googleServerKey,
       googleBrowserMap: !!CONFIG.googleBrowserKey, nass: !!CONFIG.nassKey, airNow: !!CONFIG.airNowKey });
   });

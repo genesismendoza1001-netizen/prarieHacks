@@ -204,7 +204,7 @@ export default function App() {
     <div className="backdrop-bloom bloom-one" aria-hidden="true"/><div className="backdrop-bloom bloom-two" aria-hidden="true"/>
     <div className="shell">
       <header className="topbar">
-        <a href="/" className="brand" aria-label="Piggy Forecast home"><span className="logo">🐽</span><span><strong>Piggy Forecast</strong><small>THE IOWA SNIFF REPORT</small></span></a>
+        <a href="/" className="brand" aria-label="GrinnSmell home"><span className="logo">🐽</span><span><strong>GrinnSmell</strong><small>THE IOWA SNIFF REPORT</small></span></a>
         <div className="header-end"><span className="live-chip"><i/> DATA-POWERED</span><span className="today-text">{readableTime(new Date(), { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span></div>
       </header>
       <main>
@@ -227,7 +227,7 @@ export default function App() {
         <FarmingSimulator/>
         <ReportCard location={dashboard?.location}/>
       </main>
-      <footer><span>🐽 Piggy Forecast · Made for curious Iowans</span><span>Informational only · Not an odor exposure or health warning service · <a href="https://www.iowadnr.gov/environmental-protection/animal-feeding-operations/afo-online-services" target="_blank" rel="noreferrer">DNR data details ↗</a></span></footer>
+      <footer><span>🐽 GrinnSmell · Made for curious Iowans</span><span>Informational only · Not an odor exposure or health warning service · <a href="https://www.iowadnr.gov/environmental-protection/animal-feeding-operations/afo-online-services" target="_blank" rel="noreferrer">DNR data details ↗</a></span></footer>
     </div>
   </>;
 }

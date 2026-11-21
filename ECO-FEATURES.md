@@ -1,4 +1,4 @@
-# Piggy Forecast — Eco Edition
+# GrinnSmell — Eco Edition
 
 This release extends the supplied `prarieHacks-fixed(1).zip`. The Node server, React UI, forecasting model, Google Maps, OpenWeather, DNR GIS, seasonal estimates, USDA pigs, and user smell reports remain part of the project.
 
