@@ -1,6 +1,7 @@
 # prarieHacks
+GrinnSmell combines real-time meteorological data from OpenWeather, regulated livestock facility locations from the Iowa Department of Natural Resources, air quality observations from EPA AirNow, water quality measurements from USGS, and agricultural statistics from USDA NASS. An experimental geographic and weather-based model estimates manure-odor risk. Environmental education features are informed by Iowa State University research and Iowa DNR publications. Predictions are informational estimates and have not been validated as measured odor probabilities.
 
-# Piggy Forecast — corrected runnable React project
+# GrinSmell — corrected runnable React project
 
 This version fixes filenames accidentally saved with ` (1)` and fixes the Node server's static-file path. **You do not need to use any real credentials to see the pink dashboard.** Live data requires API keys in a local `.env` file.
 
@@ -54,3 +55,70 @@ Additional details: `REACT-SETUP.md`. Smell risk values are **heuristic indices*
 **See [ECO-FEATURES.md](ECO-FEATURES.md)** for the expanded setup, API credentials, source links, AirNow and USGS behavior, wind map, and simulator limitations.
 
 A separate `AIRNOW_API_KEY` in `.env` enables measured US AQI. USGS stream measurements need no additional key; observations are shown only if available. Live mapped animal feeding operations remain from Iowa DNR and the wind arrow uses OpenWeather data.
+
+## Sources Used
+1. OpenWeather API
+https://openweathermap.org/api
+
+2. Google Maps Geocoding API
+https://developers.google.com/maps/documentation/geocoding
+
+3. Google Maps JavaScript API
+https://developers.google.com/maps/documentation/javascript
+
+4. Iowa DNR Animal Feeding Operations GIS
+https://services3.arcgis.com/kfmqp6kwSeDnDKNY/ArcGIS/rest/services/animal_feeding_operations/FeatureServer/0
+
+5. EPA AirNow API
+https://docs.airnowapi.org/
+
+6. USGS Water Services
+https://waterservices.usgs.gov/nwis/iv/
+
+7. USDA NASS Quick Stats API
+https://quickstats.nass.usda.gov/
+
+
+SCIENTIFIC RESEARCH & ENVIRONMENTAL REFERENCES
+
+8. Iowa State University — Swine Manure and Land Application Practices to Minimize Odors
+https://www.porkgateway.iastate.edu/resource/swine-manure-and-land-application-practices-minimize-odors
+
+9. Iowa State University — Air Management Practices Assessment Tool
+https://www.extension.iastate.edu/ampat/application-methods
+
+10. Iowa DNR — Animal Feeding Operations Odor Study
+https://www.iowadnr.gov/media/2319/download?inline=
+
+11. USDA NASS — Quarterly Hogs and Pigs (September 2026)
+https://data.nass.usda.gov/Newsroom/2026/09-24-2026.php
+
+12. Iowa Economic Development & Finance Authority — Advanced Manufacturing
+https://opportunityiowa.gov/business/iowa-advantage/key-industries/advanced-manufacturing
+
+13. Iowa Department of Agriculture — Crop Progress Report
+https://iowaagriculture.gov/news/crop-progress-report-11-15-2026
+
+14. Iowa DNR — AFO Online Services
+https://www.iowadnr.gov/environmental-protection/animal-feeding-operations/afo-online-services
+
+15. Iowa Water Quality Information System (IWQIS)
+https://iwqis.iowawis.org/
+
+
+DEVELOPMENT TECHNOLOGIES
+
+16. React
+https://react.dev/
+
+17. Vite
+https://vite.dev/
+
+18. Node.js
+https://nodejs.org/
+
+19. Google Maps Platform
+https://developers.google.com/maps
+
+20. Browser Geolocation API
+https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API

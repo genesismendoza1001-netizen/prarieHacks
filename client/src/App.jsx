@@ -43,7 +43,7 @@ function WeatherCard({ data }) {
     ['↝', 'WIND', weather ? `${fixed(weather.windMph)} mph ${cardinal(weather.windFromDeg)}` : '—'],
     ['◌', 'HUMIDITY', weather ? `${Math.round(weather.humidity)}%` : '—'],
     ['🌾', 'NEARBY FACILITIES', farms?.totalNearby ?? '—'],
-    ['🐖', 'WITH SWINE', farms?.pigFacilities ?? '—']
+    ['🐖', 'WITH PIGS', farms?.pigFacilities ?? '—']
   ];
   return <article className="card today-card">
     <div className="card-top"><span className="section-kicker">TODAY'S CONDITIONS</span><span className="emoji-small">🌤️</span></div>
@@ -89,7 +89,7 @@ function FacilityCard({ data, mapKey }) {
     <h2>Live stink map &amp; wind</h2>
     <MapPanel apiKey={mapKey} location={data?.location} sources={sources} windFromDeg={data?.conditions?.windFromDeg} windMph={data?.conditions?.windMph}/>
     <div className="source-list">{sources.length ? sources.slice(0, 4).map((s, i) => <div className="source-row" key={`${s.id}-${i}`}>
-      <div><div className="source-name">{s.name}</div><div className="source-note">{s.swineAnimalUnits > 0 ? 'Swine-containing operation' : 'Other livestock operation'} · {Math.round(s.totalAnimalUnits || 0).toLocaleString()} animal units</div></div>
+      <div><div className="source-name">{s.name}</div><div className="source-note">{s.swineAnimalUnits > 0 ? 'Pig-containing operation' : 'Other livestock operation'} · {Math.round(s.totalAnimalUnits || 0).toLocaleString()} animal units</div></div>
       <span className="source-distance">{fixed(s.distanceKm)} km</span>
     </div>) : <p className="muted">{data ? 'No regulated facilities returned nearby. Other odor sources may still exist.' : 'Facility contributions appear here after a forecast.'}</p>}</div>
     <a href={DNR_URL} target="_blank" rel="noreferrer" className="fact-link">Browse the full DNR dataset ↗</a>

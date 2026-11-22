@@ -92,7 +92,7 @@ export default function MapPanel({ apiKey, location, sources = [], windFromDeg, 
           clickable: false }));
       }
       add(new maps.Marker({ map: map.current, position: point,
-        title: `${source.name} · ${source.distanceKm} km · ${pig ? 'Swine-containing facility' : 'Other livestock facility'}`,
+        title: `${source.name} · ${source.distanceKm} km · ${pig ? 'Pig-containing facility' : 'Other livestock facility'}`,
         icon: { path: maps.SymbolPath.CIRCLE, scale: pig ? 6 : 5, fillColor: pig ? '#c75b8a' : '#9f8f77',
           fillOpacity: 0.92, strokeColor: '#fff', strokeWeight: 1.5 }
       }));
